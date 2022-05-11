@@ -1,13 +1,57 @@
 import numpy as np
 import pandas as pd
 
+class Example:
+    def __init__(self):
+        pass
+
+    @property
+    def classification(self):
+        return self._classification
+
+    @classification.setter
+    def classification(self, c):
+        self._classification = c
+
+    @property
+    def vector(self):
+        return self._value
+
+    @value.vector(self, v):
+        self._value = v
+
+class KNN:
+    def __init__(self, training_df, testing_df):
+        self.init_data(training_df, testing_df)
+
+    def init_data(self, training, testing):
+        self._training_data = self.create_test_matrix(training)
+
+        # List of example objects
+        self._testing_data = [create_test_matrix(r) for r in testing]
+
+
+    # Returns a numpy matrix given pd.dataframe
+    # Training data will have the last column as a class
+    def create_training_matrix(self, dataframe):
+
+        # ":" for all rows, then provide a list of indexes for columns
+        # Here we want to take all columns except the last one and transform it into
+        # a numpy matrix
+        df_matix = df.iloc[:,[i for i in range(len(df.columns)-1)]].to_numpy()    
+        return return df_matrix
+
+    # Creates matrix for test (incoming) data
+    def create_test_matrix(self, df_row):
+        eg = Example()
+        eg.vector = df_row.to_numpy()
+        return eg
+            
+
 def main():
     df = pd.read_csv("pima.csv", header=None)
 
-    # ":" for all rows, then provide a list of indexes for columns
-    # Here we want to take all columns except the last one and transform it into
-    # a numpy matrix
-    df_matix = df.iloc[:,[i for i in range(len(df.columns)-1)]].to_numpy()
+    
 
     for eg in test_data:
         take_away_matrix = df_matix - eg
