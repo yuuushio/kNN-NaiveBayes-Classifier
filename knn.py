@@ -46,6 +46,37 @@ class KNN:
         eg = Example()
         eg.vector = df_row.to_numpy()
         return eg
+
+    def classify(self):
+        for eg in self._testing_data:
+            # Example's vector is broadcasted to the testing_data matrix
+            difference = self._testing_data - eg.vector
+
+            sq_difference = np.square(difference)
+            attribute_sum = sq_difference.sum()
+            # Square root each value to get the distance vector
+            distance_matrix = np.sqrt(attribute_sum)
+            
+            # Match the class with the corresponding distance before we sort
+            # the distances.
+            # [:, [-1]] means [all rows, last column]
+            dist_class_list = [(d, c) for d,c in zip(distance_matrix, df.iloc[:,[-1]]]
+
+            # Sort the tuples by the distance. Ascending order by default
+            dist_class_list.sort(key=lambda x:x[0])
+            
+            # Keep count of yes'es and no's of the first k items
+            class_dict = {"yes":0, "no":0}
+            for j in range(k):
+                # 1st index of the j'th item is its class; increment that class
+                class_dict[dist_class_list[j][1]]
+
+            # Since whenever there's a tie, we choose "yes", therefore we're
+            # only choosing "no" whenever "no" count is strictly greater
+            eg.classification = "no" if class_dict["no"] > class_dict["yes"] else "yes"
+
+            
+
             
 
 def main():
@@ -65,7 +96,7 @@ def main():
             class_dict[tp_li[j][1]] += 1
 
         # Takes care of a tie when we use else statement
-        classification = "no" if class_dict["no"] > class_dict["yes"] else "yes"
+        classification = 
         yield classification
 
 
