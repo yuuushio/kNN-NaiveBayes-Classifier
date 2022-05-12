@@ -5,8 +5,8 @@ import sys
 
 class Example:
 
-    def __init__(self):
-        pass
+    def __init__(self, v):
+        self._value = v
 
     @property
     def classification(self):
@@ -54,8 +54,7 @@ class KNN:
 
     # Creates matrix for test (incoming) data
     def _create_test_matrix(self, df_row):
-        eg = Example()
-        eg.vector = df_row
+        eg = Example(df_row)
         return eg
 
     def classify(self):
@@ -80,14 +79,12 @@ class KNN:
             # Keep count of yes'es and no's for first k items
             class_dict = {"yes": 0, "no": 0}
             for j in range(self.k):
-                print(dist_class_list[j])
                 # 1st index of the j'th item is its class; increment count of that class
                 class_dict[dist_class_list[j][1]] += 1
 
             # Since whenever there's a tie, we choose "yes", therefore we're
             # only choosing "no" whenever "no" count is strictly greater
-            eg.classification = "no" if class_dict["no"] > class_dict[
-                "yes"] else "yes"
+            eg.classification = "no" if class_dict["no"] > class_dict["yes"] else "yes"
 
             yield eg.classification
 
