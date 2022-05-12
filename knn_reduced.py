@@ -1,8 +1,8 @@
 """
 KNN classification algorithm implementation in 40 sloc, where the caculations are
-comprised of mostly vectorized operations from numpy and python, therefore; faster vs. for-loops.
+comprised mostly of vectorized operations from numpy and python, therefore; faster vs. for-loops.
 This is a less-readable version of the implemenatation, which I did for FUN after implemenating the 
-proper version (`knn.py`), to see how much I could compact/reduce it.
+proper version (`knn.py`), to see how many lines I could chip away
 """
 
 import numpy as np
