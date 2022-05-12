@@ -54,25 +54,22 @@ class KNN:
     def classify(self):
         for eg in self._testing_data:
             # Example's vector is broadcasted to the testing_data matrix
-            difference = self._training_data - eg.vector
+            sq_difference = np.square(self._training_data - eg.vector)
 
-            sq_difference = np.square(difference)
-            attribute_sum = sq_difference.sum(axis=1)
             # Square root each value to get the distance vector
-            distance_matrix = np.sqrt(attribute_sum)
+            distance_matrix = np.sqrt(sq_difference.sum(axis=1))
             
             # Match the class with the corresponding distance before we sort
             # the distances.
             # [:, [-1]] means [all rows, last column]
-            #print(self._training_df.iloc[1:,[-1]].values[i][0])
-
             class_list = [v[0] for v in self._training_df.iloc[:,[-1]].values]
 
             dist_class_list = [(d, c) for d,c in zip(distance_matrix, class_list)]
 
             # Sort the tuples by the distance. Ascending order by default
             dist_class_list.sort(key=lambda x:x[0])
-            # Keep count of yes'es and no's of the first k items
+
+            # Keep count of yes'es and no's for first k items
             class_dict = {"yes":0, "no":0}
             for j in range(self.k):
                 print(dist_class_list[j])
