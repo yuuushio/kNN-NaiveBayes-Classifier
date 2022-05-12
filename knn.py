@@ -31,19 +31,19 @@ class KNN:
         self._training_df = training_df
         self._testing_df = testing_df
         self.k = k
-        self.init_data(training_df, testing_df)
+        self._init_data(training_df, testing_df)
 
-    def init_data(self, training, testing):
-        self._training_data = self.create_training_matrix(training)
+    def _init_data(self, training, testing):
+        self._training_data = self._create_training_matrix(training)
 
         # List of example objects
         self._testing_data = [
-            self.create_test_matrix(r) for r in testing.to_numpy()
+            self._create_test_matrix(r) for r in testing.to_numpy()
         ]
 
     # Returns a numpy matrix given pd.dataframe
     # Training data will have the last column as a class
-    def create_training_matrix(self, dataframe):
+    def _create_training_matrix(self, dataframe):
         # ":" for all rows, then provide a list of indexes for columns
         # Here we want to take all columns except the last one and transform it into
         # a numpy matrix
@@ -53,7 +53,7 @@ class KNN:
         return df_matrix
 
     # Creates matrix for test (incoming) data
-    def create_test_matrix(self, df_row):
+    def _create_test_matrix(self, df_row):
         eg = Example()
         eg.vector = df_row
         return eg
