@@ -25,7 +25,7 @@ class Example:
         self._value = v
 
 
-class KNN:
+class Classifier:
 
     def __init__(self, training_df, testing_df, k):
         self._training_df = training_df
@@ -57,7 +57,7 @@ class KNN:
         eg = Example(df_row)
         return eg
 
-    def classify(self):
+    def knn(self):
         for eg in self._testing_data:
             # Example's vector is broadcasted to the testing_data matrix
             sq_difference = np.square(self._training_data - eg.vector)
@@ -88,15 +88,26 @@ class KNN:
 
             yield eg.classification
 
+    def naive_bayes(self):
+        # Get the string value of the different types of classes
+        classes = [c[0] for c in self._training_df.iloc[:,[-1]].drop_duplicates().to_numpy()]
+        # Array of indices to get all columns except the last
+        indexes = [i for i in range(len(self._training_df.columns)-1)]
+
+        # For each class, create their corressponding dataframe
+        df_li = [self._training_df[self._training_df.iloc[:,-1] == c].iloc[:,indexes] for c in classes]
+
+        yield 0
+
 
 def main():
     df_training = pd.read_csv(sys.argv[1], header=None)
     df_testing = pd.read_csv(sys.argv[2], header=None)
     k = int(sys.argv[3])
 
-    knn = KNN(df_training, df_testing, k)
+    knn = Classifier(df_training, df_testing, k)
 
-    for c in knn.classify():
+    for c in knn.naive_bayes():
         print(c)
 
 
