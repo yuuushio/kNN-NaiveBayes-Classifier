@@ -106,9 +106,22 @@ class Classifier:
             base = [(1/(vec * np.sqrt(2*np.pi)))*np.e for vec in std_vec]
 
             # Calculate probability density function exponent
-            expo = [-(np.square(eg.vector - mean_vec_array[0])/2*np.square(std_vec_array[0]))]
+            expo = [-(np.square(eg.vector - mean_vec[i])/2*np.square(std_vec[i])) for i in range(len(classes))]
 
-        yield 0
+            # Calculate the probability (desnity function) for each class
+            prob_density = [np.power(base[i], expo[i]) for i in range(len(classes))]
+
+            # To get the final probability, we just have to multiply the values
+            # in the vector (of each class), since those values should be the 
+            # probability density values of each attribute  
+            p_c_e = [np.prod(prob_density[i]) for i in range(len(classes))]
+            
+
+            class_probability = {k:v for k,v in zip(classes, p_c_e)}
+            #class_probability = [(v, c) for v,c in zip(p_c_e, classes)]
+            #class_probability.sort(lambda x: x[0])
+
+            yield "no" if class_probability["no"] > class_probability["yes"] else "yes"
 
 
 def main():
