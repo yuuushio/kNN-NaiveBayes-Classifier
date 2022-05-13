@@ -93,8 +93,8 @@ class Classifier:
         # Get the string value of the different types of classes
         classes = [
             c[0]
-            for c in self._training_df.iloc[:,
-                                            [-1]].drop_duplicates().to_numpy()
+            for c in self._training_df.iloc[:, [-1]].drop_duplicates()
+                                                                .to_numpy()
         ]
         
         # This gets referenced a few times, so better to declare it here
@@ -105,8 +105,7 @@ class Classifier:
 
         # For each class, create their corressponding pandas dataframe
         df_li = [
-            self._training_df[self._training_df.iloc[:, -1] == c].iloc[:,
-                                                                       indexes]
+            self._training_df[self._training_df.iloc[:, -1] == c].iloc[:, indexes]
             for c in classes
         ]
 
@@ -147,9 +146,15 @@ def main():
     df_testing = pd.read_csv(sys.argv[2], header=None)
     k = int(sys.argv[3])
 
-    knn = Classifier(df_training, df_testing, k)
+    classifier = Classifier(df_training, df_testing, k)
 
-    for c in knn.naive_bayes():
+    print("KNN")
+    for c in classifier.knn():
+        print(c)
+
+    print()
+    print("Naive Bayes")
+    for c in classifier.naive_bayes():
         print(c)
 
 
