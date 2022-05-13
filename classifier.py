@@ -96,6 +96,10 @@ class Classifier:
             for c in self._training_df.iloc[:,
                                             [-1]].drop_duplicates().to_numpy()
         ]
+        
+        # This gets referenced a few times, so better to declare it here
+        # for caching/locality purposes
+        num_classes = len(classes)
         # Array of indices to get all columns except the last
         indexes = [i for i in range(len(self._training_df.columns) - 1)]
 
@@ -117,18 +121,18 @@ class Classifier:
             # Calculate probability density function exponent
             expo = [
                 -(np.square(eg.vector - mean_vec[i]) / 2 *
-                  np.square(std_vec[i])) for i in range(len(classes))
+                  np.square(std_vec[i])) for i in range(num_classes)
             ]
 
             # Calculate the probability (desnity function) for each attribute of each class
             prob_density = [
-                np.power(base[i], expo[i]) for i in range(len(classes))
+                np.power(base[i], expo[i]) for i in range(num_classes)
             ]
 
             # To get the final probability, we just have to multiply the values
             # in the vector (of each class), since those values should be the
             # probability density values of each attribute
-            p_c_e = [np.prod(prob_density[i]) for i in range(len(classes))]
+            p_c_e = [np.prod(prob_density[i]) for i in range(num_classes)]
 
             class_probability = {k: v for k, v in zip(classes, p_c_e)}
             #class_probability = [(v, c) for v,c in zip(p_c_e, classes)]
