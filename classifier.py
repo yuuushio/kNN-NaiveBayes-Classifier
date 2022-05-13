@@ -84,18 +84,27 @@ class Classifier:
 
             # Since whenever there's a tie, we choose "yes", therefore we're
             # only choosing "no" whenever "no" count is strictly greater
-            eg.classification = "no" if class_dict["no"] > class_dict["yes"] else "yes"
+            eg.classification = "no" if class_dict["no"] > class_dict[
+                "yes"] else "yes"
 
             yield eg.classification
 
     def naive_bayes(self):
         # Get the string value of the different types of classes
-        classes = [c[0] for c in self._training_df.iloc[:,[-1]].drop_duplicates().to_numpy()]
+        classes = [
+            c[0]
+            for c in self._training_df.iloc[:,
+                                            [-1]].drop_duplicates().to_numpy()
+        ]
         # Array of indices to get all columns except the last
-        indexes = [i for i in range(len(self._training_df.columns)-1)]
+        indexes = [i for i in range(len(self._training_df.columns) - 1)]
 
         # For each class, create their corressponding pandas dataframe
-        df_li = [self._training_df[self._training_df.iloc[:,-1] == c].iloc[:,indexes] for c in classes]
+        df_li = [
+            self._training_df[self._training_df.iloc[:, -1] == c].iloc[:,
+                                                                       indexes]
+            for c in classes
+        ]
 
         for eg in self._testing_data:
             # List of vectors of std & mean for each class
@@ -103,25 +112,30 @@ class Classifier:
             mean_vec = [df.mean().to_numpy() for df in df_li]
 
             # Calculate probability density func base
-            base = [(1/(vec * np.sqrt(2*np.pi)))*np.e for vec in std_vec]
+            base = [(1 / (vec * np.sqrt(2 * np.pi))) * np.e for vec in std_vec]
 
             # Calculate probability density function exponent
-            expo = [-(np.square(eg.vector - mean_vec[i])/2*np.square(std_vec[i])) for i in range(len(classes))]
+            expo = [
+                -(np.square(eg.vector - mean_vec[i]) / 2 *
+                  np.square(std_vec[i])) for i in range(len(classes))
+            ]
 
             # Calculate the probability (desnity function) for each class
-            prob_density = [np.power(base[i], expo[i]) for i in range(len(classes))]
+            prob_density = [
+                np.power(base[i], expo[i]) for i in range(len(classes))
+            ]
 
             # To get the final probability, we just have to multiply the values
-            # in the vector (of each class), since those values should be the 
-            # probability density values of each attribute  
+            # in the vector (of each class), since those values should be the
+            # probability density values of each attribute
             p_c_e = [np.prod(prob_density[i]) for i in range(len(classes))]
-            
 
-            class_probability = {k:v for k,v in zip(classes, p_c_e)}
+            class_probability = {k: v for k, v in zip(classes, p_c_e)}
             #class_probability = [(v, c) for v,c in zip(p_c_e, classes)]
             #class_probability.sort(lambda x: x[0])
 
-            yield "no" if class_probability["no"] > class_probability["yes"] else "yes"
+            yield "no" if class_probability["no"] > class_probability[
+                "yes"] else "yes"
 
 
 def main():
