@@ -120,7 +120,7 @@ class Classifier:
                   np.square(std_vec[i])) for i in range(len(classes))
             ]
 
-            # Calculate the probability (desnity function) for each class
+            # Calculate the probability (desnity function) for each attribute of each class
             prob_density = [
                 np.power(base[i], expo[i]) for i in range(len(classes))
             ]
