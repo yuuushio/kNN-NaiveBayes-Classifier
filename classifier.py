@@ -84,17 +84,15 @@ class Classifier:
 
             # Since whenever there's a tie, we choose "yes", therefore we're
             # only choosing "no" whenever "no" count is strictly greater
-            eg.classification = "no" if class_dict["no"] > class_dict[
-                "yes"] else "yes"
+            eg.classification = "no" if class_dict["no"] > class_dict["yes"] else "yes"
 
             yield eg.classification
 
     def naive_bayes(self):
         # Get the string value of the different types of classes
         classes = [
-            c[0]
-            for c in self._training_df.iloc[:, [-1]].drop_duplicates()
-                                                                .to_numpy()
+            c[0] for c in 
+            self._training_df.iloc[:, [-1]].drop_duplicates().to_numpy()
         ]
         
         # This gets referenced a few times, so better to declare it here
@@ -137,8 +135,7 @@ class Classifier:
             #class_probability = [(v, c) for v,c in zip(p_c_e, classes)]
             #class_probability.sort(lambda x: x[0])
 
-            yield "no" if class_probability["no"] > class_probability[
-                "yes"] else "yes"
+            yield "no" if class_probability["no"] > class_probability["yes"] else "yes"
 
 
 def main():
