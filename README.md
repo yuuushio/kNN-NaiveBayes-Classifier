@@ -1,3 +1,2 @@
-# KNN-Classifier
-
-## Usage
+# kNN & Naive Bayes Classifier
+--
