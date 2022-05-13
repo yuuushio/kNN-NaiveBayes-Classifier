@@ -94,8 +94,19 @@ class Classifier:
         # Array of indices to get all columns except the last
         indexes = [i for i in range(len(self._training_df.columns)-1)]
 
-        # For each class, create their corressponding dataframe
+        # For each class, create their corressponding pandas dataframe
         df_li = [self._training_df[self._training_df.iloc[:,-1] == c].iloc[:,indexes] for c in classes]
+
+        for eg in self._testing_data:
+            # List of vectors of std & mean for each class
+            std_vec = [df.std().to_numpy() for df in df_li]
+            mean_vec = [df.mean().to_numpy() for df in df_li]
+
+            # Calculate probability density func base
+            base = [(1/(vec * np.sqrt(2*np.pi)))*np.e for vec in std_vec]
+
+            # Calculate probability density function exponent
+            expo = [-(np.square(eg.vector - mean_vec_array[0])/2*np.square(std_vec_array[0]))]
 
         yield 0
 
