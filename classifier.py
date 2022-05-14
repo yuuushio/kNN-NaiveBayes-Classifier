@@ -50,8 +50,8 @@ class Classifier:
         # ":" for all rows, then provide a list of indexes for columns
         # Here we want to take all columns except the last one and transform it into
         # a numpy matrix
-        df_matrix = dataframe.iloc[:, [i for i in range(len(dataframe.columns) - 1)]]
-                                                                            .to_numpy()
+        df_matrix = dataframe.iloc[:, [i for i in range(len(dataframe.columns) - 1)]]\
+            .to_numpy()
         return df_matrix
 
     # Creates matrix for test (incoming) data
