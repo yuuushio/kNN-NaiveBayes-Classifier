@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import sys
+import memory_profiler as mem_profile
+import time
 
 
 class Example:
@@ -27,11 +29,12 @@ class Example:
 
 class Classifier:
 
-    def __init__(self, training_df, testing_df, k):
+    def __init__(self, training_df, testing_df, k, algorithm):
         self._training_df = training_df
         self._testing_df = testing_df
         self.k = k
         self._init_data(training_df, testing_df)
+        self._algorithm = algorithm
 
     def _init_data(self, training, testing):
         self._training_data = self._create_training_matrix(training)
@@ -47,15 +50,20 @@ class Classifier:
         # ":" for all rows, then provide a list of indexes for columns
         # Here we want to take all columns except the last one and transform it into
         # a numpy matrix
-        df_matrix = dataframe.iloc[:, [
-            i for i in range(len(dataframe.columns) - 1)
-        ]].to_numpy()
+        df_matrix = dataframe.iloc[:, [i for i in range(len(dataframe.columns) - 1)]]
+                                                                            .to_numpy()
         return df_matrix
 
     # Creates matrix for test (incoming) data
     def _create_test_matrix(self, df_row):
         eg = Example(df_row)
         return eg
+
+    def classify(self):
+        if self._algorithm == 0:
+            return self.knn()
+        else:
+            return self.naive_bayes()
 
     def knn(self):
         for eg in self._testing_data:
@@ -89,12 +97,13 @@ class Classifier:
             yield eg.classification
 
     def naive_bayes(self):
+
         # Get the string value of the different types of classes
         classes = [
-            c[0] for c in 
-            self._training_df.iloc[:, [-1]].drop_duplicates().to_numpy()
+            c[0]
+            for c in self._training_df.iloc[:,[-1]].drop_duplicates().to_numpy()
         ]
-        
+
         # This gets referenced a few times, so better to declare it here
         # for caching/locality purposes
         num_classes = len(classes)
@@ -138,20 +147,30 @@ class Classifier:
             yield "no" if class_probability["no"] > class_probability["yes"] else "yes"
 
 
-def main():
+def parse_arguments():
+    algorithm = 0  # 0 for knn
     df_training = pd.read_csv(sys.argv[1], header=None)
     df_testing = pd.read_csv(sys.argv[2], header=None)
-    k = int(sys.argv[3])
 
-    classifier = Classifier(df_training, df_testing, k)
+    if len(sys.argv) != 4:
+        sys.exit(
+            "Usage: python classifier.py <training_csv> <testing_csv> <algrorithm>"
+        )
 
-    print("KNN")
-    for c in classifier.knn():
-        print(c)
+    if str(sys.argv[3]) != "NB" and str(sys.argv[3]) != "nb":
+        k = int(sys.argv[3][0])
+    else:
+        algorithm = 1
+        k = 1
 
-    print()
-    print("Naive Bayes")
-    for c in classifier.naive_bayes():
+    return df_training, df_testing, k, algorithm
+
+
+def main():
+    train, test, k, algo = parse_arguments()
+    classifier = Classifier(train, test, k, algo)
+
+    for c in classifier.classify():
         print(c)
 
 
