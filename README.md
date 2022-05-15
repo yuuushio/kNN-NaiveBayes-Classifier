@@ -9,13 +9,13 @@ The original dataset was normalized using Weka.
 
 ### Usage
 ```bash
-python <training-set> <testing-set> <algorithm>
+python classifier.py <training-set> <testing-set> <algorithm>
 ```
 
 E.g., running the kNN classifier:
 
 ```bash
-python pima.csv test.csv 3NN
+python classifier.py pima.csv test.csv 3NN
 ```
 
 The *3* can be replaced with any integer to specify the number of neighbours.
@@ -23,7 +23,7 @@ The *3* can be replaced with any integer to specify the number of neighbours.
 E.g., running the Naive Bayes classifier:
 
 ```bash
-python pima.csv test.csv nb
+python classifier.py pima.csv test.csv nb
 ```
 
 ### TODO
