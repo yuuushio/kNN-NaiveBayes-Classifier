@@ -1,3 +1,3 @@
 #! /bin/sh
 
-python classifier.py pima.csv test.csv nb
+python main.py pima.csv test.csv nb
