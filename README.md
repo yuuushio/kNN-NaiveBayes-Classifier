@@ -5,7 +5,7 @@ The implementation only contains 1 for-loop for *each* algorithm, with rest of t
 
 The original dataset was normalized using Weka.
 
-*Currently only works for two classes, as it's based on a pre-defined specification for analyzing/classfying Pima Indian Diabetes dataset.*
+*Currently only works for two classes (binary classification), as it's based on a pre-defined specification for analyzing/classfying Pima Indian Diabetes dataset.*
 
 ### Usage
 ```bash
@@ -25,7 +25,3 @@ E.g., running the Naive Bayes classifier:
 ```bash
 python main.py pima.csv test.csv nb
 ```
-
-### TODO
-- Parallelize calculations of each class and then join the results.
-- Extend to work on arbitary number of classes.
