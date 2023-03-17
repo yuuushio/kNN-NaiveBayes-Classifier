@@ -1,9 +1,11 @@
 # kNN & Naive Bayes Classifier
-Implementation of K-Nearest Neighbour and Naive Bayes algorithms to evaluate them on a real dataset and classify incoming examples. The k-NN algorithm is implemented for any `k` value and uses Euclidean distance as the distance measure. And since we're working with numeric attributes, the probabilty density function is used to evaluate the probabilities for Naive Bayes algorithm.
+Implementation of K-Nearest Neighbor and Naive Bayes algorithms to assess their performance on a real dataset and classify incoming data. 
 
-The implementation only contains 1 for-loop for *each* algorithm, with rest of the calculations done in a data-science oriented manner: pandas to read, manipulate and filter data; whereafter, the data is transformed into matricies - making extensive use of numpy broadcasting to perform efficient, vector operations. 
+The k-NN algorithm was implemented for any `k` value and employed Euclidean distance as the distance measure. Since the analysis involved numeric attributes, the probability density function was used to evaluate probabilities for the Naive Bayes algorithm.
 
-The original dataset was normalized using Weka.
+The implementation incorporated a data-science oriented approach, with only one for-loop per algorithm and most of the calculations executed through pandas to read, manipulate, and filter the data. Following this, the data was transformed into matrices, leveraging numpy broadcasting to perform efficient vector operations.
+
+To ensure consistency and accuracy, the original dataset was normalized using Weka.
 
 *Currently only works for two classes (binary classification), as it's based on a pre-defined specification for analyzing/classfying Pima Indian Diabetes dataset.*
 
